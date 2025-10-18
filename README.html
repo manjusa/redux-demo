@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Redux Demo Project - Learning React Redux</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+          sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background: #f8f9fa;
+        margin: 0;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+      }
+
+      h1 {
+        color: #2c3e50;
+        border-bottom: 3px solid #3498db;
+        padding-bottom: 10px;
+        margin-bottom: 30px;
+        font-size: 2.5em;
+      }
+
+      h2 {
+        color: #34495e;
+        margin: 40px 0 20px 0;
+        font-size: 1.8em;
+        border-left: 4px solid #3498db;
+        padding-left: 15px;
+      }
+
+      h3 {
+        color: #2c3e50;
+        margin: 30px 0 15px 0;
+        font-size: 1.4em;
+      }
+
+      h4 {
+        color: #34495e;
+        margin: 25px 0 10px 0;
+        font-size: 1.2em;
+      }
+
+      p {
+        margin-bottom: 15px;
+        text-align: justify;
+      }
+
+      .note {
+        background: #fff3cd;
+        border: 1px solid #ffeaa7;
+        border-radius: 5px;
+        padding: 15px;
+        margin: 20px 0;
+        border-left: 4px solid #f39c12;
+      }
+
+      .features {
+        background: #d4edda;
+        border: 1px solid #c3e6cb;
+        border-radius: 5px;
+        padding: 20px;
+        margin: 20px 0;
+      }
+
+      .features ul {
+        list-style: none;
+        padding-left: 0;
+      }
+
+      .features li {
+        margin: 8px 0;
+        padding-left: 25px;
+        position: relative;
+      }
+
+      .features li::before {
+        content: "✅";
+        position: absolute;
+        left: 0;
+      }
+
+      .code-block {
+        background: #2d3748;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 20px 0;
+        overflow-x: auto;
+      }
+
+      .code-block code {
+        color: #e2e8f0;
+        font-family: "Fira Code", "Monaco", "Cascadia Code", monospace;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      .key-concepts {
+        background: #e8f4fd;
+        border: 1px solid #b3d9ff;
+        border-radius: 5px;
+        padding: 20px;
+        margin: 20px 0;
+      }
+
+      .key-concepts ul {
+        padding-left: 20px;
+      }
+
+      .key-concepts li {
+        margin: 8px 0;
+      }
+
+      .key-concepts strong {
+        color: #2c3e50;
+      }
+
+      .flow-step {
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 5px;
+        padding: 15px;
+        margin: 10px 0;
+        border-left: 4px solid #28a745;
+      }
+
+      .file-structure {
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 5px;
+        padding: 20px;
+        margin: 20px 0;
+        font-family: monospace;
+        white-space: pre-line;
+      }
+
+      .concept-box {
+        background: #fff;
+        border: 2px solid #3498db;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 25px 0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .concept-title {
+        color: #3498db;
+        font-weight: bold;
+        font-size: 1.1em;
+        margin-bottom: 10px;
+      }
+
+      .highlight {
+        background: #fff3cd;
+        padding: 2px 4px;
+        border-radius: 3px;
+        font-weight: bold;
+      }
+
+      ol {
+        padding-left: 20px;
+      }
+
+      ol li {
+        margin: 10px 0;
+      }
+
+      .toc {
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 5px;
+        padding: 20px;
+        margin: 30px 0;
+      }
+
+      .toc ul {
+        list-style: none;
+        padding-left: 0;
+      }
+
+      .toc li {
+        margin: 8px 0;
+        padding-left: 20px;
+      }
+
+      .toc a {
+        color: #3498db;
+        text-decoration: none;
+      }
+
+      .toc a:hover {
+        text-decoration: underline;
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          padding: 20px;
+          margin: 10px;
+        }
+
+        h1 {
+          font-size: 2em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Redux Demo Project - Learning React Redux</h1>
+
+      <div class="note">
+        <strong>BTW:</strong> There is a todo-redux-app which also demonstrates
+        how to use redux. This app I think is more realistic than todo.
+      </div>
+
+      <p>
+        This project demonstrates how React Redux works by building a simple
+        "Social Handles Manager" application. It covers all the core concepts of
+        Redux with Redux Toolkit in an easy-to-understand way.
+      </p>
+
+      <div class="toc">
+        <h3>📑 Table of Contents</h3>
+        <ul>
+          <li><a href="#what-app-does">🎯 What This App Does</a></li>
+          <li><a href="#how-redux-works">🏗️ How React Redux Works</a></li>
+          <li><a href="#data-flow">🔄 Complete Redux Data Flow</a></li>
+          <li><a href="#project-structure">📁 Project Structure</a></li>
+          <li><a href="#key-concepts">🔑 Key Redux Concepts</a></li>
+          <li><a href="#getting-started">🚀 Getting Started</a></li>
+        </ul>
+      </div>
+
+      <h2 id="what-app-does">🎯 What This App Does</h2>
+
+      <div class="features">
+        <p>
+          A simple app to manage your social media handles (Twitter, Instagram,
+          etc.) with full CRUD operations:
+        </p>
+        <ul>
+          <li>Add new social handles</li>
+          <li>Edit existing handles</li>
+          <li>Delete handles</li>
+          <li>Persist data to localStorage</li>
+          <li>Real-time state management</li>
+        </ul>
+      </div>
+
+      <h2 id="how-redux-works">🏗️ How React Redux Works - Step by Step</h2>
+
+      <div class="concept-box">
+        <h3>
+          1.
+          <span class="concept-title">The Redux Store</span>
+          (<code>src/app/store.js</code>)
+        </h3>
+
+        <p>
+          The store is the
+          <span class="highlight">single source of truth</span> for your app's
+          state. Think of it as a global database that any component can access.
+        </p>
+
+        <div class="code-block">
+          <code>
+            // Create the store with configureStore (Redux Toolkit) export const
+            store = configureStore({ reducer: { handles: handlesReducer, // Each
+            reducer manages a slice of state }, preloadedState, // Load saved
+            data from localStorage });
+          </code>
+        </div>
+
+        <div class="key-concepts">
+          <strong>Key Concepts:</strong>
+          <ul>
+            <li>
+              <strong>Single Store:</strong> Your entire app has ONE store that
+              holds ALL state
+            </li>
+            <li>
+              <strong>Reducers:</strong> Pure functions that specify how state
+              changes in response to actions
+            </li>
+            <li>
+              <strong>preloadedState:</strong> Initialize store with data (like
+              from localStorage)
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="concept-box">
+        <h3>
+          2.
+          <span class="concept-title">State Persistence with localStorage</span>
+        </h3>
+
+        <p>The app automatically saves and loads state from browser storage:</p>
+
+        <div class="code-block">
+          <code>
+            // Load state from localStorage on app start function loadState() {
+            try { const serializedState =
+            localStorage.getItem(LOCALSTORAGE_KEY); if (serializedState ===
+            null) return undefined; return JSON.parse(serializedState); } catch
+            (err) { return undefined; } } // Save state to localStorage whenever
+            state changes function saveState(state) { try { const
+            serializedState = JSON.stringify(state);
+            localStorage.setItem(LOCALSTORAGE_KEY, serializedState); } catch
+            (err) { console.log(err); } } // Subscribe to store changes and
+            auto-save store.subscribe(() => { saveState(store.getState()); });
+          </code>
+        </div>
+
+        <div class="key-concepts">
+          <strong>Why This Works:</strong>
+          <ul>
+            <li>
+              <code>store.subscribe()</code> runs a callback
+              <strong>every time</strong> the state changes
+            </li>
+            <li>This creates an "automatic save" feature</li>
+            <li>When you refresh the page, your data is still there!</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="concept-box">
+        <h3>
+          3.
+          <span class="concept-title">Slices - Organizing State Logic</span>
+          (<code>src/features/handles/handlesSlice.js</code>)
+        </h3>
+
+        <p>
+          A <span class="highlight">slice</span> is a collection of Redux logic
+          for a specific feature. It includes:
+        </p>
+        <ul>
+          <li>Initial state</li>
+          <li>Reducer functions (how to update state)</li>
+          <li>Action creators (what actions can be dispatched)</li>
+        </ul>
+
+        <div class="code-block">
+          <code>
+            export const handlesSlice = createSlice({ name: "handles", // Name
+            for this slice initialState: { // Starting state items: [] },
+            reducers: { // Functions that update state addHandle: { /* ... */ },
+            updateHandle: { /* ... */ }, removeHandle: { /* ... */ }, }, });
+          </code>
+        </div>
+      </div>
+
+      <div class="concept-box">
+        <h3>
+          4. <span class="concept-title">Actions with Prepare Functions</span>
+        </h3>
+
+        <p>
+          The <code>addHandle</code> action uses a
+          <span class="highlight">prepare function</span> to process data before
+          it reaches the reducer:
+        </p>
+
+        <div class="code-block">
+          <code>
+            addHandle: { reducer(state, action) {
+            state.items.push(action.payload); // Just add to array }, prepare({
+            platform, username }) { // Format data FIRST const id = makeId();
+            const createdAt = new Date().toISOString(); const normalizedUsername
+            = username.startsWith("@") ? username.slice(1) : username; return {
+            payload: { id, platform, username: normalizedUsername, createdAt }
+            }; } }
+          </code>
+        </div>
+
+        <div class="key-concepts">
+          <strong>The Flow:</strong>
+          <ol>
+            <li>
+              You dispatch:
+              <code
+                >dispatch(addHandle({ platform: "twitter", username: "@john"
+                }))</code
+              >
+            </li>
+            <li>
+              <strong>Prepare runs FIRST:</strong> Adds ID, timestamp, removes @
+              symbol
+            </li>
+            <li>
+              <strong>Reducer runs SECOND:</strong> Gets the prepared payload
+              and adds to state
+            </li>
+          </ol>
+
+          <strong>Why Use Prepare?</strong>
+          <ul>
+            <li>Keeps reducers simple and pure</li>
+            <li>Centralizes data formatting logic</li>
+            <li>Automatically adds metadata (ID, timestamps)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="concept-box">
+        <h3>5. <span class="concept-title">Selectors - Reading State</span></h3>
+
+        <p>Selectors are functions that extract specific pieces of state:</p>
+
+        <div class="code-block">
+          <code>
+            // Get all handles export const selectAllHandles = (state) =>
+            state.handles.items; // Get a specific handle by ID export const
+            selectHandleById = (state, id) => state.handles.items.find((h) =>
+            h.id === id); // Filter handles by platform export const
+            selectHandlesByPlatform = (state, platform) =>
+            state.handles.items.filter((h) => h.platform === platform);
+          </code>
+        </div>
+
+        <div class="key-concepts">
+          <strong>Benefits:</strong>
+          <ul>
+            <li>Encapsulate state structure knowledge</li>
+            <li>Reusable across components</li>
+            <li>Can compute derived data</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="concept-box">
+        <h3>6. <span class="concept-title">Connecting React to Redux</span></h3>
+
+        <h4>Provider Setup (<code>src/index.js</code>)</h4>
+        <p>
+          The <code>Provider</code> makes the store available to ALL components:
+        </p>
+
+        <div class="code-block">
+          <code>
+            import { Provider } from "react-redux"; import store from
+            "./app/store"; root.render( &lt;Provider store={store}&gt; {/* Wraps
+            entire app */} &lt;App /&gt; &lt;/Provider&gt; );
+          </code>
+        </div>
+
+        <h4>
+          Reading State with useSelector
+          (<code>src/features/handles/HandleList.js</code>)
+        </h4>
+        <div class="code-block">
+          <code>
+            import { useSelector } from "react-redux"; import { selectAllHandles
+            } from "./handlesSlice"; export default function HandleList() {
+            const handles = useSelector(selectAllHandles); // Gets state from
+            store return ( &lt;div&gt; {handles.map(handle =&gt; &lt;HandleItem
+            key={handle.id} handle={handle} /&gt;)} &lt;/div&gt; ); }
+          </code>
+        </div>
+
+        <h4>
+          Dispatching Actions with useDispatch
+          (<code>src/features/handles/AddHandleForm.js</code>)
+        </h4>
+        <div class="code-block">
+          <code>
+            import { useDispatch } from "react-redux"; import { addHandle } from
+            "./handlesSlice"; export default function AddHandleForm() { const
+            dispatch = useDispatch(); // Get dispatch function function
+            onSubmit(e) { e.preventDefault(); dispatch(addHandle({ platform,
+            username })); // Send action to store } return &lt;form
+            onSubmit={onSubmit}&gt;...&lt;/form&gt;; }
+          </code>
+        </div>
+      </div>
+
+      <h2 id="data-flow">🔄 Complete Redux Data Flow</h2>
+
+      <p>Here's what happens when you add a new handle:</p>
+
+      <div class="flow-step">
+        <strong>1. User Action:</strong> User submits form in
+        <code>AddHandleForm</code>
+      </div>
+      <div class="flow-step">
+        <strong>2. Dispatch:</strong>
+        <code
+          >dispatch(addHandle({ platform: "twitter", username: "@john" }))</code
+        >
+      </div>
+      <div class="flow-step">
+        <strong>3. Prepare:</strong> Prepare function adds ID, timestamp,
+        normalizes username
+      </div>
+      <div class="flow-step">
+        <strong>4. Reducer:</strong> Reducer receives prepared payload and adds
+        to <code>state.handles.items</code>
+      </div>
+      <div class="flow-step">
+        <strong>5. Store Update:</strong> Store state is updated with new handle
+      </div>
+      <div class="flow-step">
+        <strong>6. Auto-Save:</strong> <code>store.subscribe()</code> callback
+        saves to localStorage
+      </div>
+      <div class="flow-step">
+        <strong>7. Component Re-render:</strong>
+        <code>HandleList</code> re-renders because it uses
+        <code>useSelector(selectAllHandles)</code>
+      </div>
+      <div class="flow-step">
+        <strong>8. UI Update:</strong> New handle appears in the list
+      </div>
+
+      <h2 id="project-structure">📁 Project Structure</h2>
+
+      <div class="file-structure">
+        src/ ├── app/ │ └── store.js # Redux store configuration + localStorage
+        ├── features/ │ └── handles/ │ ├── handlesSlice.js # State logic
+        (actions, reducers, selectors) │ ├── AddHandleForm.js # Form to add new
+        handles (useDispatch) │ ├── HandleList.js # Display all handles
+        (useSelector) │ └── HandleItem.js # Individual handle with edit/delete
+        ├── App.js # Main app component └── index.js # Provider setup
+      </div>
+
+      <h2 id="key-concepts">🔑 Key Redux Concepts Learned</h2>
+
+      <div class="key-concepts">
+        <ul>
+          <li><strong>Store:</strong> Single source of truth for app state</li>
+          <li>
+            <strong>Actions:</strong> Objects describing what happened (with
+            type and payload)
+          </li>
+          <li>
+            <strong>Reducers:</strong> Pure functions that calculate new state
+            based on actions
+          </li>
+          <li>
+            <strong>Slices:</strong> Modern way to organize Redux logic with
+            Redux Toolkit
+          </li>
+          <li>
+            <strong>Selectors:</strong> Functions to read specific pieces of
+            state
+          </li>
+          <li>
+            <strong>useSelector:</strong> React hook to read state from store
+          </li>
+          <li>
+            <strong>useDispatch:</strong> React hook to send actions to store
+          </li>
+          <li>
+            <strong>Provider:</strong> React component that makes store
+            available to all components
+          </li>
+          <li>
+            <strong>Immutability:</strong> Redux requires immutable updates
+            (Redux Toolkit uses Immer under the hood)
+          </li>
+        </ul>
+      </div>
+
+      <h2 id="getting-started">🚀 Getting Started</h2>
+
+      <div class="concept-box">
+        <h3><code>npm start</code></h3>
+        <p>
+          Runs the app in the development mode.<br />
+          Open
+          <a href="http://localhost:3000" target="_blank"
+            >http://localhost:3000</a
+          >
+          to view it in your browser.
+        </p>
+        <p>
+          The page will reload when you make changes.<br />
+          You may also see any lint errors in the console.
+        </p>
+      </div>
+
+      <div class="concept-box">
+        <h3><code>npm test</code></h3>
+        <p>Launches the test runner in the interactive watch mode.</p>
+      </div>
+
+      <div class="concept-box">
+        <h3><code>npm run build</code></h3>
+        <p>
+          Builds the app for production to the <code>build</code> folder.<br />
+          It correctly bundles React in production mode and optimizes the build
+          for the best performance.
+        </p>
+      </div>
+
+      <div
+        style="
+          text-align: center;
+          margin-top: 40px;
+          padding: 20px;
+          background: #f8f9fa;
+          border-radius: 5px;
+        "
+      >
+        <p><strong>Happy Learning! 🎉</strong></p>
+        <p>
+          This HTML version provides a more readable format with syntax
+          highlighting and better visual organization.
+        </p>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+  </body>
+</html>
