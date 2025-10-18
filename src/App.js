@@ -1,23 +1,14 @@
-import logo from './logo.svg';
-import './App.css';
+// src/App.js
+import React from "react";
+import AddHandleForm from "./features/handles/AddHandleForm";
+import HandleList from "./features/handles/HandleList";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div style={{ maxWidth: 700, margin: "24px auto", padding: 16 }}>
+      <h1>My Social Handles</h1>
+      <AddHandleForm />
+      <HandleList />
     </div>
   );
 }
