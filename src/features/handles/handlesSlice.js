@@ -90,7 +90,7 @@ export const { addHandle, updateHandle, removeHandle, loadHandles, clearAll } =
   handlesSlice.actions;
 
 // Selectors
-export const selectAllHandles = (state) => state.handles.items;
+export const selectAllHandles = (state) => state.handles.items; //handles is reducer's name
 export const selectHandleById = (state, id) =>
   state.handles.items.find((h) => h.id === id);
 export const selectHandlesByPlatform = (state, platform) =>
