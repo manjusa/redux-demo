@@ -980,6 +980,45 @@ dispatch(addHandle({id: 1, name: '@john'}));  // Calls ACTION CREATOR
                 </code></pre>
           </li>
         </ul>
+        <p>HandleItem hints</p>
+        <ul>
+          <li>import useDispatch,and actions updateHandle and removeHandle</li>
+          <li>Manage states for <b>isEditing,userName,platform</b></li>
+          <li>
+            Create <b>onSave()</b>- gets value ,disptach to "updateHandle" and
+            sets Editing to false
+          </li>
+          <li>
+            Create <b>onDelete()</b>- pops a confirm using window.confirm and
+            dispatch to removeHandle
+          </li>
+          <li>
+            <pre><code>
+            <div>
+            <!-- removed because prettier was complaining here but in real code will work <div  style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 12,
+        padding: "8px 0",
+          }}> -->
+             <div {{flex:1}}>
+                {isEditing?(
+                  <div>
+                   <input value={userName} onChange="{e=>setPlatform(e.target.userName)}"/>
+                    <select value={platform} onChange="{(e)=>setPlatform(e.target.value)}">
+                        <option value="twitter">twitter</option>
+                        <option value="twitter">instagram</option>
+
+                    </select>
+                  </div>
+
+                ): null}
+             </div>
+               </div>
+
+            </code></pre>
+          </li>
+        </ul>
       </div>
 
       <div class="concept-box">
@@ -991,13 +1030,20 @@ dispatch(addHandle({id: 1, name: '@john'}));  // Calls ACTION CREATOR
         </p>
 
         <div class="code-block">
-          <code>
-            import { Provider } from "react-redux"; import store from
-            "./app/store"; root.render( &lt;Provider store={store}&gt; {/* Wraps
-            entire app */} &lt;App /&gt; &lt;/Provider&gt; );
+          <pre>
+            <code>
+                import { Provider } from "react-redux";
+                import store from "./app/store";
+                import "./index.css";
+                import App from "./App";
+             <Provider store={store}>
+                    <App />
+            </Provider>
           </code>
+        </pre>
         </div>
-
+        <h4>(<code>src/app.js</code>)</h4>
+        <p>import HandleList and AddHandleForm</p>
         <h4>
           Reading State with useSelector
           (<code>src/features/handles/HandleList.js</code>)
