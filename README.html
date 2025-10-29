@@ -255,175 +255,118 @@
         <h3>
           2.
           <span class="concept-title">Slices - Organizing State Logic</span>
-          (<code>src/features/handles/handlesSlice.js</code>)
         </h3>
-
         <p>
           A <span class="highlight">slice</span> is a collection of Redux logic
-          for a specific feature.
-        </p>
-        <ul>
-          <li>import from <b>"@reduxjs/toolkit";</b></li>
-          <li>
-            A slice is a Redux Toolkit concept that contains:<br />
-            <b>Initial State </b>- The starting value for this piece of state
-            <br />
-            <b>reducers</b> - Functions that define how the state updates
-            <br /><b>Action Creators</b> - Automatically generated functions to
-            dispatch actions
-          </li>
+          for a specific feature.<br /><br />
+          A slice is a Redux Toolkit concept that contains:<br />
+          <b>Initial State </b>- The starting value for this piece of state
           <br />
-          <b>How Slice Links to Store</b>
-          <li>
-            <pre><code>
-            1) CREATE SLICE (handlesSlice.js)
-            const handlesSlice = createSlice({
-                name: 'handles', // Slice name
-                initialState: [], // Initial state for this slice
-                reducers: { // Reducer functions
-                    addHandle: (state, action) => {
-                        state.push(action.payload);
-                    },
-                    removeHandle: (state, action) => {
-                        return state.filter(handle => handle.id !== action.payload);
-                    }
-                }
-            });
-
-            // 2. EXPORT REDUCER
-            export default handlesSlice.reducer; // This goes to store
-            export const { addHandle, removeHandle } = handlesSlice.actions; // Action creators
-
-            // 3. CONNECT TO STORE (store.js the one we created above)
-            import handlesReducer from './handles/handlesSlice';
-
-            const store = configureStore({
-                reducer: {
-                    handles: handlesReducer // Links slice reducer to store
-                }
-            });</code></pre>
-          </li>
-          <b>connection flow</b>
-          <p>
-            Slice → Reducer → Store → Components<br />
-            handlesSlice.js:<br />
-            ├── Initial State: [] <br />├── Reducers: { addHandle, removeHandle
-            }<br />
-            └── Exports: handlesReducer + action creators <br /><br />store.js:
-            <br />├── Takes handlesReducer <br />└── Creates state.handles slice
-            <br /><br />Components:<br />
-            ├── useSelector(state => state.handles) // Read state <br />└──
-            dispatch(addHandle(data)) // Update state
-          </p>
-          <b>hints below</b>
-          <li>
-            create Initial state.It will have empty array eg items:[]. Eg will
-            be like
-            <pre><code>
-                const initialState = 
-                { items: [  // optional example:
-               // { id: '1', platform: 'twitter', username: '@demo', createdAt: '...' }
-               ] }</code></pre>
-          </li>
-
-          <li>
-            create handlesSlice from <b>createSlice</b>. This method takes
-            params
-            <ul>
-              <li>name- name for this slice</li>
-              <li>initialState we created aboce</li>
-              <li>
-                reducers (state,action)-functions that updates state.
-                <br />reducers is {} > that has other objects like
-                addHandle(takes prepare as
-                well),updateHandle,removeHandle,loadHanles,clearAll
-              </li>
-            </ul>
-          </li>
-          <li>
-            Add reducer takes <b>prepare()</b> that uses <b>makeId()</b> which
-            returns Id based on Date now toString and MathRandom
-            <pre><code>return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
-
-            </code></pre>
-            Above, <b>makeID()</b> combining the current timestamp (in base-36)
-            with a random string (5 characters from base-36), creating something
-            like "l8x9k2abc".
-          </li>
-          <li>export actions from handleSlice</li>
-          <li>
-            export selectors like
-            selectAllHandles,selectHandleById,selectHandlesByPlatform
-          </li>
-          <li>export default</li>
-        </ul>
-
-        <div class="code-block">
-          <pre><code>
-            export const handlesSlice = createSlice
-            (
-                {
-                    name: "handles", // Name for this slice 
-                    initialState:
-                     { // Starting state items: [] 
-                     },
-                    reducers: 
-                    { 
-                        // Functions that update state
-                         addHandle: {  }//use prepare({platform,username}),
-                         updateHandle: {  }, 
-                         removeHandle: { }, 
-                         loadHandles:{},
-                         clearAll(state){
-                            store.items=[]
-                         }
-                    },
-                    } 
-            );
-        });
-          </code></pre>
+          <b>reducers</b> - Functions that define how the state updates <br /><b
+            >Action Creators</b
+          >
+          - Automatically generated functions to dispatch actions
+        </p>
+        <div class="numbered-steps">
+          <div class="step-item">
+            <div class="step-title">Create handleSlice.js file</div>
+            <div class="step-content">
+              Create <code class="inline-code">handleSlice.js</code> file in the
+              <code class="inline-code">src/features/handles/</code> folder:
+            </div>
+          </div>
         </div>
-        <div>
-          <h4>
-            Am asking about syntax. reducer(state, action) {
-            state.items.push(action.payload); }, while updateHandle directly
-            takes state.action
-          </h4>
-          <h3>The Syntax Difference:</h3>
-          <h5>addHandle (Object with reducer property)</h5>
-          <p>
-            :When you have <strong>BOTH reducer AND prepare:</strong> You MUST
-            use the object syntax
-          </p>
-          <pre><code>addHandle: {
-                    reducer(state, action) {  // ← function inside an object
-                        state.items.push(action.payload);
-                    },
-                    prepare({ platform, username }) {
-                        // ...
-                    }
-                    }
-                </code></pre>
-          <h5>updateHandle (Direct function):</h5>
-          <pre><code>updateHandle(state, action) {  // ← direct function
-                const { id, platform, username } = action.payload;
-                // ...
-                }</code></pre>
-          <p>
-            When you have ONLY a reducer: like in update ,shorthand sytnax would
-            do
-          </p>
-          <pre><code>// This is shorthand syntax
-updateHandle(state, action) {
-  // just the reducer logic
-}
 
-// Redux Toolkit automatically converts this to:
-updateHandle: {
-  reducer(state, action) {
-    // your logic here
-  }
-}</code></pre>
+        <div class="key-concepts">
+          <strong>Key Slice Concepts:</strong>
+          <ul>
+            <li>
+              <strong>Import:</strong> Import from
+              <code class="inline-code">@reduxjs/toolkit</code>
+            </li>
+            <li>
+              <strong>Initial State:</strong> Define starting values for your
+              state slice
+            </li>
+            <li>
+              <strong>Reducers:</strong> Functions that define how state updates
+            </li>
+            <li>
+              <strong>Action Creators:</strong> Automatically generated
+              functions to dispatch actions
+            </li>
+            <li>
+              <strong>Prepare Functions:</strong> Process data before it reaches
+              the reducer
+            </li>
+            <li>
+              <strong>Selectors:</strong> Functions to extract specific pieces
+              of state
+            </li>
+          </ul>
+        </div>
+
+        <div class="key-concepts">
+          <strong>Connection Flow:</strong>
+          <div
+            style="
+              font-family: monospace;
+              background: #f8f9fa;
+              padding: 15px;
+              border-radius: 5px;
+              margin: 10px 0;
+            "
+          >
+            Slice → Reducer → Store → Components<br />
+            <br />
+            <strong>handlesSlice.js:</strong><br />
+            ├── Initial State: { items: [] }<br />
+            ├── Reducers: { addHandle, removeHandle, updateHandle }<br />
+            └── Exports: handlesReducer + action creators<br />
+            <br />
+            <strong>store.js:</strong><br />
+            ├── Takes handlesReducer<br />
+            └── Creates state.handles slice<br />
+            <br />
+            <strong>Components:</strong><br />
+            ├── useSelector(state => state.handles) // Read state<br />
+            └── dispatch(addHandle(data)) // Update state
+          </div>
+        </div>
+
+        <div class="code-reference">
+          <p>
+            📄 <strong>Slice Creation & Connection:</strong>
+            <a
+              href="extractedCode.html#slice-creation"
+              target="_blank"
+              class="code-link"
+            >
+              View Complete Slice to Store Flow →
+            </a>
+          </p>
+          <p class="code-description">
+            <em>See how to create a slice and connect it to the Redux store</em>
+          </p>
+        </div>
+
+        <div class="code-reference">
+          <p>
+            📄 <strong>Slice Implementation Details:</strong>
+            <a
+              href="extractedCode.html#initial-state"
+              target="_blank"
+              class="code-link"
+            >
+              View Slice Template & Syntax Examples →
+            </a>
+          </p>
+          <p class="code-description">
+            <em
+              >Complete slice template with initial state, reducers, and syntax
+              differences</em
+            >
+          </p>
         </div>
       </div>
       <div class="concept-box">

@@ -259,6 +259,162 @@ store.subscribe(() => {
 });</code></pre>
         </div>
       </div>
+
+      <div class="code-section" id="slice-creation">
+        <div class="code-title">How Slice Links to Store</div>
+        <div class="code-description">
+          Complete flow of creating a slice and connecting it to the store
+        </div>
+        <div class="code-block">
+          <pre><code>// 1) CREATE SLICE (handlesSlice.js)
+const handlesSlice = createSlice({
+    name: 'handles', // Slice name
+    initialState: [], // Initial state for this slice
+    reducers: { // Reducer functions
+        addHandle: (state, action) => {
+            state.push(action.payload);
+        },
+        removeHandle: (state, action) => {
+            return state.filter(handle => handle.id !== action.payload);
+        }
+    }
+});
+
+// 2. EXPORT REDUCER
+export default handlesSlice.reducer; // This goes to store
+export const { addHandle, removeHandle } = handlesSlice.actions; // Action creators
+
+// 3. CONNECT TO STORE (store.js the one we created above)
+import handlesReducer from './handles/handlesSlice';
+
+const store = configureStore({
+    reducer: {
+        handles: handlesReducer // Links slice reducer to store
+    }
+});</code></pre>
+        </div>
+      </div>
+
+      <div class="code-section" id="initial-state">
+        <div class="code-title">Initial State Setup</div>
+        <div class="code-description">
+          Creating the initial state structure for your slice
+        </div>
+        <div class="code-block">
+          <pre><code>const initialState = {
+    items: [  // optional example:
+        // { id: '1', platform: 'twitter', username: '@demo', createdAt: '...' }
+    ]
+};</code></pre>
+        </div>
+      </div>
+
+      <div class="code-section" id="makeid-function">
+        <div class="code-title">MakeID Function</div>
+        <div class="code-description">
+          Generate unique IDs using timestamp and random string combination
+        </div>
+        <div class="code-block">
+          <pre><code>// makeID() combining the current timestamp (in base-36)
+// with a random string (5 characters from base-36), 
+// creating something like "l8x9k2abc"
+function makeId() {
+    return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="code-section" id="slice-template">
+        <div class="code-title">Complete Slice Template</div>
+        <div class="code-description">
+          Basic structure for creating a Redux slice with all common reducers
+        </div>
+        <div class="code-block">
+          <pre><code>export const handlesSlice = createSlice({
+    name: "handles", // Name for this slice 
+    initialState: {
+        items: [] // Starting state
+    },
+    reducers: {
+        // Functions that update state
+        addHandle: {
+            reducer(state, action) {
+                state.items.push(action.payload);
+            },
+            prepare({ platform, username }) {
+                return {
+                    payload: {
+                        id: makeId(),
+                        platform,
+                        username,
+                        createdAt: new Date().toISOString()
+                    }
+                };
+            }
+        },
+        updateHandle: (state, action) => {
+            const { id, platform, username } = action.payload;
+            const existingHandle = state.items.find(item => item.id === id);
+            if (existingHandle) {
+                existingHandle.platform = platform;
+                existingHandle.username = username;
+            }
+        },
+        removeHandle: (state, action) => {
+            state.items = state.items.filter(item => item.id !== action.payload);
+        },
+        loadHandles: (state, action) => {
+            state.items = action.payload;
+        },
+        clearAll: (state) => {
+            state.items = [];
+        }
+    }
+});</code></pre>
+        </div>
+      </div>
+
+      <div class="code-section" id="reducer-syntax">
+        <div class="code-title">Reducer Syntax Differences</div>
+        <div class="code-description">
+          Understanding when to use object syntax vs direct function syntax
+        </div>
+        <div class="code-block">
+          <pre><code>// Object with reducer property (when you have BOTH reducer AND prepare)
+addHandle: {
+    reducer(state, action) {  // ← function inside an object
+        state.items.push(action.payload);
+    },
+    prepare({ platform, username }) {
+        return {
+            payload: {
+                id: makeId(),
+                platform,
+                username,
+                createdAt: new Date().toISOString()
+            }
+        };
+    }
+}
+
+// Direct function (when you have ONLY a reducer)
+updateHandle(state, action) {  // ← direct function
+    const { id, platform, username } = action.payload;
+    const existingHandle = state.items.find(item => item.id === id);
+    if (existingHandle) {
+        existingHandle.platform = platform;
+        existingHandle.username = username;
+    }
+}
+
+// Redux Toolkit automatically converts direct functions to:
+updateHandle: {
+    reducer(state, action) {
+        // your logic here
+    }
+}</code></pre>
+        </div>
+      </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
