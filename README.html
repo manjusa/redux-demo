@@ -423,6 +423,31 @@
                     </div>
                   </div>
                 </div>
+                <div class="sub-step">
+                  <div class="sub-step-title">
+                    c) expose actions based on "handlesSlice" function
+                    <pre><code></code></pre>
+                  </div>
+                  <div class="sub-step-content">
+                    slice we created above export const { addHandle,
+                    updateHandle, removeHandle, loadHandles, clearAll
+                    }=handlesSlices.actions; (where handlesSlice is slice)
+                  </div>
+                </div>
+                <div class="sub-step">
+                  <div class="sub-step-title">d) expose selector functions</div>
+                  <div class="sub-step-content">
+                    selectAllHandles - takes state as param <br />
+                    Now if you look, jab slice(handlesSlice) create kiya ,then
+                    we gave a name ("handles") ,gave it "initialState" that was
+                    intitiated with
+                    <code class="inline-code"> items[]</code>. Therefore when we
+                    have to get items, do
+                    <code class="inline-code">
+                      selectAllHandles=(state)=> state.handles.items</code
+                    >
+                  </div>
+                </div>
               </div>
             </div>
           </div>
