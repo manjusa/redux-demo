@@ -265,14 +265,154 @@
           <b>reducers</b> - Functions that define how the state updates <br /><b
             >Action Creators</b
           >
-          - Automatically generated functions to dispatch actions
+          - Automatically generated functions to dispatch actions<br />
+          <b>Selectors</b>-that returns data
         </p>
         <div class="numbered-steps">
           <div class="step-item">
-            <div class="step-title">Create handleSlice.js file</div>
+            <div class="step-title">Create handlesSlice.js file</div>
             <div class="step-content">
-              Create <code class="inline-code">handleSlice.js</code> file in the
-              <code class="inline-code">src/features/handles/</code> folder:
+              Create <code class="inline-code">handlesSlice.js</code> file in
+              the <code class="inline-code">src/features/handles/</code> folder:
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-title">Changes in handlesSlice.js file</div>
+            <div class="step-content">
+              <div class="sub-steps">
+                <div class="sub-step">
+                  <div class="sub-step-title">
+                    a) Create initialState constant
+                  </div>
+                  <div class="sub-step-content">
+                    Create <code class="inline-code">initialState</code> const
+                    with items array. On load it starts as empty [], but will
+                    contain objects like:
+                    <div
+                      class="code-block"
+                      style="margin: 10px 0; font-size: 0.9em"
+                    >
+                      <pre><code>{ 
+  id: '1', 
+  platform: 'twitter',
+  username: '@demo',
+  createdAt: '...' 
+}</code></pre>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="sub-step">
+                  <div class="sub-step-title">
+                    b) Create handlesSlice using createSlice
+                  </div>
+                  <div class="sub-step-content">
+                    Create const
+                    <code class="inline-code">handlesSlice</code> using Redux's
+                    <strong>"createSlice"</strong> function.
+
+                    <div class="key-concepts" style="margin: 15px 0">
+                      <strong>createSlice takes 3 main parameters:</strong>
+                      <ul style="margin: 10px 0">
+                        <li>
+                          <strong>name:</strong> String identifier (e.g.,
+                          "handles")
+                        </li>
+                        <li>
+                          <strong>initialState:</strong> The initial state we
+                          created above
+                        </li>
+                        <li>
+                          <strong>reducers:</strong> Object containing reducer
+                          functions
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div class="reducer-types">
+                      <div class="reducer-type">
+                        <div class="reducer-type-title">
+                          Reducer Functions Include:
+                        </div>
+                        <div class="reducer-type-desc">
+                          <code class="inline-code">addHandle</code>,
+                          <code class="inline-code">updateHandle</code>,
+                          <code class="inline-code">removeHandle</code>,
+                          <code class="inline-code">loadHandles</code>,
+                          <code class="inline-code">clearAll</code>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div
+                      class="key-concepts"
+                      style="
+                        margin: 15px 0;
+                        background: #fff3cd;
+                        border-left: 4px solid #f39c12;
+                      "
+                    >
+                      <strong
+                        >🔍 Special Focus: addHandle with Prepare
+                        Function</strong
+                      >
+                      <div style="margin: 10px 0; font-size: 0.95em">
+                        <code class="inline-code">addHandle</code> uses a
+                        special <strong>prepare function</strong>
+                        that formats incoming data before it reaches the
+                        reducer.
+                      </div>
+
+                      <div style="margin: 15px 0">
+                        <strong>📋 The Flow:</strong>
+                        <ol style="margin: 10px 0; padding-left: 20px">
+                          <li>
+                            <strong>Dispatch Action:</strong><br />
+                            <code
+                              style="
+                                background: #f8f9fa;
+                                padding: 4px 8px;
+                                border-radius: 3px;
+                              "
+                            >
+                              dispatch(addHandle({ platform: "twitter",
+                              username: "@john" }))
+                            </code>
+                          </li>
+                          <li>
+                            <strong>Prepare Runs FIRST:</strong><br />
+                            Processes and formats data (adds ID, timestamp,
+                            normalizes username)
+                          </li>
+                          <li>
+                            <strong>Reducer Runs SECOND:</strong><br />
+                            Receives the prepared payload and updates state
+                          </li>
+                        </ol>
+                      </div>
+
+                      <div style="margin: 15px 0">
+                        <strong>💡 What Prepare Returns:</strong>
+                        <div
+                          class="code-block"
+                          style="margin: 10px 0; font-size: 0.85em"
+                        >
+                          <pre><code>// Input: { platform: "twitter", username: "@john" }
+// Prepare function returns:
+{
+  payload: {
+    id: "someUniqueId",        // ← Added by prepare
+    platform: "twitter",       // ← Kept as-is
+    username: "john",          // ← @ symbol removed
+    createdAt: "2025-10-17T..." // ← Timestamp added
+  }
+}</code></pre>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
