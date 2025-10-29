@@ -475,6 +475,37 @@ ol li {
   font-size: 0.95em;
 }
 
+/* Sub-steps styling */
+.sub-steps {
+  margin-top: 15px;
+}
+
+.sub-step {
+  background: #f8f9fa;
+  border-left: 4px solid #6c757d;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 0 6px 6px 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.sub-step-title {
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 8px;
+  font-size: 1em;
+}
+
+.sub-step-content {
+  color: #666;
+  line-height: 1.6;
+  font-size: 0.95em;
+}
+
+.child-group::before {
+  background: linear-gradient(135deg, #6c757d, #495057) !important;
+}
+
 @media (max-width: 768px) {
   .container {
     padding: 20px;

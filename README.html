@@ -87,35 +87,52 @@
           </div>
 
           <div class="step-item">
-            <div class="step-title">Configure Store with configureStore</div>
+            <div class="step-title">Configure the store variable</div>
             <div class="step-content">
-              Creates store from ConfigureStore. ConfigureStore takes 2 params
-              (actually more but here we pass 2 params):
-              <br /><br />
-              <strong>reducer:</strong> This defines the slice reducers that
-              will be combined to create the root reducer. It can be:
-
-              <div class="reducer-types">
-                <div class="reducer-type">
-                  <div class="reducer-type-title">
-                    1) Single Reducer Function
+              <div class="sub-steps">
+                <div class="sub-step">
+                  <div class="sub-step-title">
+                    Create "store" from configureStore
                   </div>
-                  <div class="reducer-type-desc">
-                    When you pass a single reducer function, that function
-                    becomes the entire root reducer for your store.
+                  <div class="sub-step-content">
+                    Creates store from configureStore. configureStore takes
+                    several options; here we highlight the important ones:
+                    <br /><br />
+                    <strong>reducer:</strong> This defines the slice reducers
+                    that will be combined to create the root reducer. It can be:
+
+                    <div class="reducer-types">
+                      <div class="reducer-type">
+                        <div class="reducer-type-title">
+                          Single Reducer Function
+                        </div>
+                        <div class="reducer-type-desc">
+                          When you pass a single reducer function, that function
+                          becomes the entire root reducer for your store.
+                        </div>
+                      </div>
+
+                      <div class="reducer-type">
+                        <div class="reducer-type-title">
+                          Object of Reducers (Slice Reducers)
+                        </div>
+                        <div class="reducer-type-desc">
+                          An object where keys become state slice names and
+                          values are the reducer functions. Redux automatically
+                          combines them using combineReducers. Each key becomes
+                          a slice of your state.
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
-                <div class="reducer-type">
-                  <div class="reducer-type-title">
-                    2) Object of Reducers (Slice Reducers)
-                  </div>
-                  <div class="reducer-type-desc">
-                    An object where keys become state slice names and values are
-                    the reducer functions. When you pass an object, Redux
-                    automatically combines them using combineReducers. (Btw
-                    reducers exist in "slice.js"). Each key becomes a slice of
-                    your state.
+                <div class="sub-step">
+                  <div class="sub-step-title">preloadedState (Optional)</div>
+                  <div class="sub-step-content">
+                    <strong>preloadedState:</strong> (optional) - The initial
+                    state value to be used when the store is created. Useful to
+                    hydrate state from localStorage or server-rendered state.
                   </div>
                 </div>
               </div>
@@ -123,10 +140,37 @@
           </div>
 
           <div class="step-item">
-            <div class="step-title">preloadedState (Optional)</div>
+            <div class="step-title">Store Subscription</div>
             <div class="step-content">
-              <strong>preloadedState:</strong> (optional) - The initial state
-              value to be used when the store is created.
+              Call subscribe on store. The subscribe method runs the provided
+              callback function every time the store's state changes.
+            </div>
+          </div>
+
+          <div class="step-item">
+            <div class="step-title">Local Storage Key</div>
+            <div class="step-content">
+              Create a const
+              <code class="inline-code">LOCALSTORAGE_KEY</code> and give it some
+              value for storing/retrieving data.
+            </div>
+          </div>
+
+          <div class="step-item">
+            <div class="step-title">Load Function</div>
+            <div class="step-content">
+              Create a function <strong>loadState</strong> that loads data
+              (serialized) from "localStorage" using above key. Use try catch
+              etc.
+            </div>
+          </div>
+
+          <div class="step-item">
+            <div class="step-title">Save Function</div>
+            <div class="step-content">
+              Create a function <strong>saveState</strong> that takes curr
+              "state" as parameter & saves to "localStorage" using above key.
+              Use try catch etc. Then expose the store.
             </div>
           </div>
         </div>
@@ -174,42 +218,6 @@
             <li>
               <strong>preloadedState:</strong> Initialize store with data (like
               from localStorage)
-            </li>
-          </ul>
-        </div>
-
-        <div class="hints-section">
-          <h4 class="hints-title">💡 Implementation Hints:</h4>
-          <ul class="hints-list">
-            <li class="hint-item">
-              <span class="hint-label">
-                from "@reduxjs/toolkit"; <br />Store Creation:</span
-              >
-
-              <ul class="sub-hints">
-                <li>moved up</li>
-              </ul>
-            </li>
-            <li class="hint-item">
-              <span class="hint-label">Store Subscription:</span> Call subscribe
-              on store. The subscribe method runs the provided callback function
-              every time the store's state changes
-            </li>
-            <li class="hint-item">
-              <span class="hint-label">Local Storage Key:</span> Create a const
-              <code class="inline-code">LOCALSTORAGE_KEY</code> and give it some
-              value
-            </li>
-            <li class="hint-item">
-              <span class="hint-label">Load Function:</span> Create a function
-              <strong>loadState</strong> that loads data (serialized) from
-              "localStorage" using above key. Use try catch etc
-            </li>
-            <li class="hint-item">
-              <span class="hint-label">Save Function:</span> Create a function
-              <strong>saveState</strong> that takes curr "state" as parameter &
-              saves to "localStorage" using above key. Use try catch etc.Then
-              expose the store
             </li>
           </ul>
         </div>
