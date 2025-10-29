@@ -140,45 +140,69 @@
           </div>
 
           <div class="step-item">
+            <div class="step-title">
+              create Local Storage Key, loadState() and then save it in
+              preloadedState
+            </div>
+            <div class="step-content">
+              a) Create a const
+              <code class="inline-code">LOCALSTORAGE_KEY</code> and give it some
+              value for storing/retrieving data.<br />
+              b) <code class="inline-code">loadState()</code>- that loads data
+              (serialized) from "localStorage" using above key. Use try catch
+              etc. <br />
+              c) basically store the state in
+              <code class="inline-code">preloadedState</code> variable
+            </div>
+          </div>
+
+          <div class="step-item">
             <div class="step-title">Store Subscription</div>
             <div class="step-content">
-              Call subscribe on store. The subscribe method runs the provided
-              callback function every time the store's state changes.
-            </div>
-          </div>
-
-          <div class="step-item">
-            <div class="step-title">Local Storage Key</div>
-            <div class="step-content">
-              Create a const
-              <code class="inline-code">LOCALSTORAGE_KEY</code> and give it some
-              value for storing/retrieving data.
-            </div>
-          </div>
-
-          <div class="step-item">
-            <div class="step-title">Load Function</div>
-            <div class="step-content">
-              Create a function <strong>loadState</strong> that loads data
-              (serialized) from "localStorage" using above key. Use try catch
-              etc.
+              Call subscribe on <code class="inline-code">store</code> variable.
+              The subscribe method runs the provided callback function every
+              time the store's state changes.
             </div>
           </div>
 
           <div class="step-item">
             <div class="step-title">Save Function</div>
             <div class="step-content">
-              Create a function <strong>saveState</strong> that takes curr
-              "state" as parameter & saves to "localStorage" using above key.
-              Use try catch etc. Then expose the store.
+              Create <code class="inline-code">saveState(<>)</code> <br />
+              - takes curr "state" as parameter &<br />
+              - saves to "localStorage" using above key. Use try catch etc. Then
+              expose the store.
             </div>
           </div>
         </div>
 
         <div class="code-reference">
           <p>
+            📄 <strong>LocalStorage & State Management Code:</strong>
+            <a
+              href="extractedCode.html#localstorage-key"
+              target="_blank"
+              class="code-link"
+            >
+              View LocalStorage Integration Examples →
+            </a>
+          </p>
+          <p class="code-description">
+            <em
+              >See complete implementation of localStorage key, loadState,
+              saveState functions and store subscription</em
+            >
+          </p>
+        </div>
+
+        <div class="code-reference">
+          <p>
             📄 <strong>Code Example:</strong>
-            <a href="extractedCode.html" target="_blank" class="code-link">
+            <a
+              href="extractedCode.html#store-configuration"
+              target="_blank"
+              class="code-link"
+            >
               View Store Configuration Code →
             </a>
           </p>
@@ -192,7 +216,11 @@
         <div class="code-reference">
           <p>
             📄 <strong>Code Examples:</strong>
-            <a href="extractedCode.html" target="_blank" class="code-link">
+            <a
+              href="extractedCode.html#single-reducer"
+              target="_blank"
+              class="code-link"
+            >
               View Reducer Configuration Examples →
             </a>
           </p>

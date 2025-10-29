@@ -17,6 +17,7 @@
         background: #f8f9fa;
         margin: 0;
         padding: 20px;
+        scroll-behavior: smooth;
       }
       .container {
         max-width: 1000px;
@@ -68,6 +69,12 @@
         border: 1px solid #e1e8ed;
         border-radius: 8px;
         padding: 20px;
+        scroll-margin-top: 20px;
+        transition: box-shadow 0.3s ease;
+      }
+      .code-section:target {
+        box-shadow: 0 0 20px rgba(52, 152, 219, 0.3);
+        border-color: #3498db;
       }
       .code-title {
         color: #2c3e50;
@@ -92,7 +99,7 @@
         documentation.
       </p>
 
-      <div class="code-section">
+      <div class="code-section" id="store-configuration">
         <div class="code-title">Store Configuration</div>
         <div class="code-description">
           Creating the Redux store with configureStore and setting up reducers
@@ -108,7 +115,7 @@ export const store = configureStore({
         </div>
       </div>
 
-      <div class="code-section">
+      <div class="code-section" id="single-reducer">
         <div class="code-title">Single Reducer Function Example</div>
         <div class="code-description">
           When you pass a single reducer function, that function becomes the
@@ -136,7 +143,7 @@ const store = configureStore({
         </div>
       </div>
 
-      <div class="code-section">
+      <div class="code-section" id="object-reducers">
         <div class="code-title">Object of Reducers (Slice Reducers)</div>
         <div class="code-description">
           An object where keys become state slice names and values are the
@@ -175,6 +182,81 @@ const store = configureStore({
 //   posts: [],
 //   handles: []
 // }</code></pre>
+        </div>
+      </div>
+
+      <div class="code-section" id="localstorage-key">
+        <div class="code-title">LocalStorage Key Constant</div>
+        <div class="code-description">
+          Define a constant key for localStorage operations
+        </div>
+        <div class="code-block">
+          <pre><code>const LOCALSTORAGE_KEY = "redux_demo_handles";</code></pre>
+        </div>
+      </div>
+
+      <div class="code-section" id="load-state">
+        <div class="code-title">Load State Function</div>
+        <div class="code-description">
+          Function to load serialized state from localStorage with error
+          handling
+        </div>
+        <div class="code-block">
+          <pre><code>function loadState() {
+  try {
+    const serializedState = localStorage.getItem(LOCALSTORAGE_KEY);
+    if (serializedState === null) return undefined;
+    return JSON.parse(serializedState);
+  } catch (err) {
+    return undefined;
+  }
+}
+
+const preloadedState = loadState();</code></pre>
+        </div>
+      </div>
+
+      <div class="code-section" id="save-state">
+        <div class="code-title">Save State Function</div>
+        <div class="code-description">
+          Function to save current state to localStorage with comprehensive
+          error handling
+        </div>
+        <div class="code-block">
+          <pre><code>/*saveState
+summary: Takes the current state as an argument
+Converts the state object to a JSON string using JSON.stringify()
+Saves it to the browser's localStorage using a predefined key (LOCALSTORAGE_KEY)
+Includes error handling in case serialization fails or localStorage is full/disabled
+
+This pattern is commonly used to:
+- Persist Redux state across page refreshes
+- Implement features like "Save to local storage"
+- Cache application state for faster initial loads
+*/
+function saveState(state) {
+  try {
+    const serializedState = JSON.stringify(state);
+    localStorage.setItem(LOCALSTORAGE_KEY, serializedState);
+  } catch (err) {
+    console.log(err);
+  }
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="code-section" id="store-subscription">
+        <div class="code-title">Store Subscription</div>
+        <div class="code-description">
+          Set up automatic state saving whenever the store state changes
+        </div>
+        <div class="code-block">
+          <pre><code>// THEN subscribe AFTER store is created:
+// This code sets up a listener on the Redux store. The subscribe method runs the provided callback
+// function every time the store's state changes. It's like setting up an automatic save feature.
+store.subscribe(() => {
+  saveState(store.getState());
+});</code></pre>
         </div>
       </div>
     </div>
