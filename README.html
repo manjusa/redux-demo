@@ -382,7 +382,18 @@
                           <li>
                             <strong>Prepare Runs FIRST:</strong><br />
                             Processes and formats data (adds ID, timestamp,
-                            normalizes username)
+                            normalizes username). Btw we use a cool custom
+                            function that we wrote to get Id using
+                            <strong>makeId()</strong>
+                            <div
+                              class="code-block"
+                              style="margin: 10px 0; font-size: 0.85em"
+                            >
+                              <pre><code>function makeId() {
+  return Date.now().toString(36) + Math.random().
+  toString(36).slice(2, 7);
+}</code></pre>
+                            </div>
                           </li>
                           <li>
                             <strong>Reducer Runs SECOND:</strong><br />
