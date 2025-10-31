@@ -374,6 +374,36 @@ function makeId() {
         </div>
       </div>
 
+      <div class="code-section" id="selector-functions">
+        <div class="code-title">Selector Functions</div>
+        <div class="code-description">
+          Functions to extract specific pieces of state from the Redux store
+        </div>
+        <div class="code-block">
+          <pre><code>// Basic selector - gets all handles
+export const selectAllHandles = (state) => state.handles.items;
+
+// Selector with parameter - find handle by ID
+export const selectHandleById = (state, id) =>
+  state.handles.items.find((h) => h.id === id);
+
+// Selector with parameter - filter handles by platform
+export const selectHandlesByPlatform = (state, platform) =>
+  state.handles.items.filter((h) => h.platform === platform);
+
+// Additional useful selectors
+export const selectHandleCount = (state) => state.handles.items.length;
+
+export const selectPlatforms = (state) => 
+  [...new Set(state.handles.items.map(h => h.platform))];
+
+// Usage in components:
+// const allHandles = useSelector(selectAllHandles);
+// const twitterHandles = useSelector(state => selectHandlesByPlatform(state, 'twitter'));
+// const specificHandle = useSelector(state => selectHandleById(state, '123'));</code></pre>
+        </div>
+      </div>
+
       <div class="code-section" id="reducer-syntax">
         <div class="code-title">Reducer Syntax Differences</div>
         <div class="code-description">
@@ -413,6 +443,99 @@ updateHandle: {
         // your logic here
     }
 }</code></pre>
+        </div>
+      </div>
+
+      <div class="code-section" id="addhandlerform-component">
+        <div class="code-title">AddHandlerForm Component</div>
+        <div class="code-description">
+          Complete React component for adding new social media handles with form
+          validation
+        </div>
+        <div class="code-block">
+          <pre><code>import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { addHandle } from './handlesSlice';
+
+// Array of supported platforms
+const PLATFORMS = ['twitter', 'instagram', 'facebook', 'linkedin', 'youtube'];
+
+export default function AddHandleForm() {
+  const dispatch = useDispatch();
+  const [platform, setPlatform] = useState(PLATFORMS[0]);
+  const [username, setUsername] = useState("");
+  const [error, setError] = useState(null);
+
+  function onSubmit(e) {
+    e.preventDefault();
+    const trimmed = username.trim();
+    if (!trimmed) {
+      setError("Please enter a username");
+      return;
+    }
+    dispatch(addHandle({ platform, username: trimmed }));
+    setUsername("");
+    setError(null);
+  }
+
+  return (
+    &lt;form onSubmit={onSubmit}&gt;
+      &lt;div&gt;
+        &lt;label&gt;Platform: 
+          &lt;select value={platform} onChange={e =&gt; setPlatform(e.target.value)}&gt;
+            {PLATFORMS.map((p) =&gt; (
+              &lt;option key={p} value={p}&gt;
+                {p}
+              &lt;/option&gt;
+            ))}
+          &lt;/select&gt;
+        &lt;/label&gt;
+      &lt;/div&gt;
+      
+      &lt;div&gt;
+        &lt;label&gt;Username: 
+          &lt;input 
+            type="text" 
+            value={username} 
+            onChange={e =&gt; setUsername(e.target.value)}
+            placeholder="Enter username (e.g., @john)" 
+          /&gt;
+        &lt;/label&gt;
+      &lt;/div&gt;
+      
+      &lt;button type="submit"&gt;Add&lt;/button&gt;
+      
+      {error && &lt;div style={{color: 'red'}}&gt;{error}&lt;/div&gt;}
+    &lt;/form&gt;
+  );
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="code-section" id="platforms-constant">
+        <div class="code-title">Platforms Constant</div>
+        <div class="code-description">
+          Array of supported social media platforms for the dropdown
+        </div>
+        <div class="code-block">
+          <pre><code>const PLATFORMS = [
+  'twitter', 
+  'instagram', 
+  'facebook', 
+  'linkedin', 
+  'youtube',
+  'tiktok',
+  'snapchat'
+];
+
+// Alternative with display names:
+const PLATFORMS_WITH_LABELS = [
+  { value: 'twitter', label: 'Twitter' },
+  { value: 'instagram', label: 'Instagram' },
+  { value: 'facebook', label: 'Facebook' },
+  { value: 'linkedin', label: 'LinkedIn' },
+  { value: 'youtube', label: 'YouTube' }
+];</code></pre>
         </div>
       </div>
     </div>

@@ -425,27 +425,123 @@
                 </div>
                 <div class="sub-step">
                   <div class="sub-step-title">
-                    c) expose actions based on "handlesSlice" function
-                    <pre><code></code></pre>
+                    c) Export Actions from handlesSlice
                   </div>
                   <div class="sub-step-content">
-                    slice we created above export const { addHandle,
-                    updateHandle, removeHandle, loadHandles, clearAll
-                    }=handlesSlices.actions; (where handlesSlice is slice)
+                    Export action creators from the slice we created above:
+                    <div
+                      class="code-block"
+                      style="margin: 10px 0; font-size: 0.9em"
+                    >
+                      <pre><code>export const { 
+  addHandle,
+  updateHandle, 
+  removeHandle, 
+  loadHandles, 
+  clearAll 
+} = handlesSlice.actions;</code></pre>
+                    </div>
+                    <div
+                      class="key-concepts"
+                      style="margin: 10px 0; font-size: 0.9em"
+                    >
+                      <strong>💡 Note:</strong> These are automatically
+                      generated action creators based on the reducer names in
+                      your slice.
+                    </div>
                   </div>
                 </div>
+
                 <div class="sub-step">
-                  <div class="sub-step-title">d) expose selector functions</div>
+                  <div class="sub-step-title">d) Export Selector Functions</div>
                   <div class="sub-step-content">
-                    selectAllHandles - takes state as param <br />
-                    Now if you look, jab slice(handlesSlice) create kiya ,then
-                    we gave a name ("handles") ,gave it "initialState" that was
-                    intitiated with
-                    <code class="inline-code"> items[]</code>. Therefore when we
-                    have to get items, do
-                    <code class="inline-code">
-                      selectAllHandles=(state)=> state.handles.items</code
+                    Create and export selector functions to read state data:
+
+                    <div class="reducer-types" style="margin: 15px 0">
+                      <div class="reducer-type">
+                        <div class="reducer-type-title">
+                          Main Selector: selectAllHandles
+                        </div>
+                        <div class="reducer-type-desc">
+                          Takes state as parameter and returns all handles from
+                          the items array.
+                        </div>
+                      </div>
+                    </div>
+
+                    <div
+                      class="code-block"
+                      style="margin: 10px 0; font-size: 0.9em"
                     >
+                      <pre><code>export const selectAllHandles = (state) => state.handles.items;</code></pre>
+                    </div>
+
+                    <div class="code-reference" style="margin: 15px 0">
+                      <p>
+                        📄 <strong>Complete Selector Functions:</strong>
+                        <a
+                          href="extractedCode.html#selector-functions"
+                          target="_blank"
+                          class="code-link"
+                        >
+                          View All Selector Examples →
+                        </a>
+                      </p>
+                      <p class="code-description">
+                        <em
+                          >See selectAllHandles, selectHandleById,
+                          selectHandlesByPlatform and more advanced selector
+                          patterns</em
+                        >
+                      </p>
+                    </div>
+
+                    <div
+                      class="key-concepts"
+                      style="
+                        margin: 15px 0;
+                        background: #e8f4fd;
+                        border-left: 4px solid #3498db;
+                      "
+                    >
+                      <strong>🔍 Understanding the Path:</strong>
+                      <ul style="margin: 10px 0; font-size: 0.9em">
+                        <li>
+                          <strong>slice name:</strong> "handles" (defined in
+                          createSlice)
+                        </li>
+                        <li><strong>initialState:</strong> { items: [] }</li>
+                        <li>
+                          <strong>store structure:</strong> state.handles.items
+                        </li>
+                      </ul>
+                      <div
+                        style="
+                          font-family: monospace;
+                          background: #f8f9fa;
+                          padding: 10px;
+                          border-radius: 3px;
+                          margin: 10px 0;
+                        "
+                      >
+                        state → handles → items
+                      </div>
+                    </div>
+
+                    <div class="reducer-types" style="margin: 15px 0">
+                      <div class="reducer-type">
+                        <div class="reducer-type-title">
+                          Additional Selectors (Optional)
+                        </div>
+                        <div class="reducer-type-desc">
+                          You can create more specific selectors like:
+                          <code class="inline-code">selectHandleById</code>,
+                          <code class="inline-code"
+                            >selectHandlesByPlatform</code
+                          >
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -547,47 +643,223 @@
       <div class="concept-box">
         <h3>
           3.
-          <span class="concept-title">AddHanlderForm</span>
+          <span class="concept-title">AddHandlerForm Component</span>
         </h3>
-        <ul>
-          <li>import useDispatch from react-redux and addHandle</li>
-          <li>
-            create "Platforms" const with array of values like "facebook" etc
-          </li>
-          <li>
-            export function "AddHandlerForm"
-            <ul>
-              <li>create "dispatch" from useDispatch</li>
-              <li>create "platform","username" and "error" states</li>
-              <li>
-                create onSubmit(e) which preventes default,take userName and
-                trim etc and dispatch to addHandle({platform,username:trimmed})
-              </li>
-              <li>reset state of username to empty str and error to null</li>
-            </ul>
-          </li>
-          <li>
-            return JSX
-            <ul>
-              <li>
-                <pre><code>
-                      <form onSubmit={onSubmit}>
-                            <label>Platform: 
-                                <select value={platform} onChange={e=> setPlatform(e.target.value)}>
-                                   
-                                {PLATFORMS.map((p) => (
-                                    <option key={p} value={p}>
-                                    {p}
-                                    </option>
-                                ))}/></label>
-                      
-                     </form>
-                    </code>
-                 </pre>
-              </li>
-            </ul>
-          </li>
-        </ul>
+        <p>
+          The AddHandlerForm component handles user input for adding new social
+          media handles. It uses <span class="highlight">useDispatch</span> to
+          send actions to the Redux store and manages local form state for the
+          user interface.
+        </p>
+
+        <div class="numbered-steps">
+          <div class="step-item">
+            <div class="step-title">Import Required Dependencies</div>
+            <div class="step-content">
+              Import <code class="inline-code">useDispatch</code> from
+              react-redux and the
+              <code class="inline-code">addHandle</code> action creator from
+              your slice.
+              <div class="code-block" style="margin: 10px 0; font-size: 0.9em">
+                <pre><code>import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { addHandle } from './handlesSlice';</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <div class="step-title">Create PLATFORMS Constant</div>
+            <div class="step-content">
+              Define an array of supported social media platforms for the
+              dropdown selection.
+              <div class="sub-steps">
+                <div class="sub-step">
+                  <div class="sub-step-title">Basic Platform Array</div>
+                  <div class="sub-step-content">
+                    Create a simple array with platform names like 'twitter',
+                    'instagram', 'facebook', etc.
+                  </div>
+                </div>
+                <div class="sub-step">
+                  <div class="sub-step-title">Advanced Options</div>
+                  <div class="sub-step-content">
+                    You can also create objects with value/label pairs for more
+                    complex platform handling.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <div class="step-title">Component Function & State Setup</div>
+            <div class="step-content">
+              Export the default function and set up all necessary state
+              variables.
+              <div class="sub-steps">
+                <div class="sub-step">
+                  <div class="sub-step-title">Initialize useDispatch</div>
+                  <div class="sub-step-content">
+                    Create <code class="inline-code">dispatch</code> variable
+                    using the useDispatch hook.
+                  </div>
+                </div>
+                <div class="sub-step">
+                  <div class="sub-step-title">Setup State Variables</div>
+                  <div class="sub-step-content">
+                    Create state for:
+                    <ul style="margin: 8px 0; padding-left: 20px">
+                      <li>
+                        <strong>platform:</strong> Currently selected platform
+                        (default to first platform)
+                      </li>
+                      <li>
+                        <strong>username:</strong> User input for the handle
+                        (starts empty)
+                      </li>
+                      <li>
+                        <strong>error:</strong> Error messages for validation
+                        (starts null)
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <div class="step-title">
+              Create onSubmit Handler Function (inside component)
+            </div>
+            <div class="step-content">
+              Handle form submission with validation and state updates.
+              <div class="sub-steps">
+                <div class="sub-step">
+                  <div class="sub-step-title">Form Validation</div>
+                  <div class="sub-step-content">
+                    <ul style="margin: 8px 0; padding-left: 20px">
+                      <li>Prevent default form submission behavior</li>
+                      <li>Trim whitespace from username input</li>
+                      <li>Check if trimmed username is not empty</li>
+                      <li>Set error message if validation fails</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="sub-step">
+                  <div class="sub-step-title">Dispatch Action</div>
+                  <div class="sub-step-content">
+                    If validation passes, dispatch the
+                    <code class="inline-code">addHandle</code>
+                    action with platform and trimmed username.
+                  </div>
+                </div>
+                <div class="sub-step">
+                  <div class="sub-step-title">Reset Form State</div>
+                  <div class="sub-step-content">
+                    Clear the username input and reset error state after
+                    successful submission.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <div class="step-title">Create Form JSX Structure</div>
+            <div class="step-content">
+              Build the complete form UI with all necessary elements.
+              <div class="sub-steps">
+                <div class="sub-step">
+                  <div class="sub-step-title">Platform Selector</div>
+                  <div class="sub-step-content">
+                    Create a <code class="inline-code">select</code> element
+                    that maps over PLATFORMS array to create option elements.
+                  </div>
+                </div>
+                <div class="sub-step">
+                  <div class="sub-step-title">Username Input</div>
+                  <div class="sub-step-content">
+                    Add a text input with value binding, onChange handler, and
+                    placeholder text.
+                  </div>
+                </div>
+                <div class="sub-step">
+                  <div class="sub-step-title">
+                    Submit Button & Error Display
+                  </div>
+                  <div class="sub-step-content">
+                    Include a submit button with "Add" label and conditional
+                    error message display with red styling.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="code-reference">
+          <p>
+            📄 <strong>Complete AddHandlerForm Implementation:</strong>
+            <a
+              href="extractedCode.html#addhandlerform-component"
+              target="_blank"
+              class="code-link"
+            >
+              View Full Component Code →
+            </a>
+          </p>
+          <p class="code-description">
+            <em
+              >See the complete React component with imports, state management,
+              and form handling</em
+            >
+          </p>
+        </div>
+
+        <div class="code-reference">
+          <p>
+            📄 <strong>Platforms Configuration:</strong>
+            <a
+              href="extractedCode.html#platforms-constant"
+              target="_blank"
+              class="code-link"
+            >
+              View Platform Arrays & Options →
+            </a>
+          </p>
+          <p class="code-description">
+            <em>Different ways to define platform options with examples</em>
+          </p>
+        </div>
+
+        <div class="key-concepts">
+          <strong>Key Form Concepts:</strong>
+          <ul>
+            <li>
+              <strong>useDispatch:</strong> Hook to send actions to Redux store
+            </li>
+            <li>
+              <strong>Controlled Components:</strong> Form inputs controlled by
+              React state
+            </li>
+            <li>
+              <strong>Form Validation:</strong> Client-side validation with
+              error handling
+            </li>
+            <li>
+              <strong>Event Handling:</strong> preventDefault and state updates
+            </li>
+            <li>
+              <strong>Conditional Rendering:</strong> Show errors only when they
+              exist
+            </li>
+            <li>
+              <strong>Action Dispatch:</strong> Sending data to Redux reducers
+            </li>
+          </ul>
+        </div>
       </div>
 
       <div class="concept-box">
