@@ -173,7 +173,7 @@ function increment() {
 
 A)
 
-1. **Consider this Redux slice**
+**3b.1. Consider this Redux slice**
 
 ```JSX
 import { createSlice } from '@reduxjs/toolkit';
@@ -204,7 +204,7 @@ Notice we have incrementByAmount in two places conceptually:
 2. Inside counterSlice.actions – the automatically generated action creator.
    They are not the same function.
 
-**2. What happens when we call this?**
+**3b.2. What happens when we call this?**
 
 ```JSX
 dispatch(incrementByAmount(5));
@@ -233,7 +233,7 @@ It simply creates an object describing what should happen.
 
 Now dispatch sends that action object to the Redux store.The Redux store identifies which reducer should handle that action based on its action type.The corresponding reducer function is executed.
 
-**3. How does the reducer receive the action?**
+**3b.3. How does the reducer receive the action?**
 
 Remember this reducer?
 
@@ -279,7 +279,7 @@ value: 5
 
 Immer handles producing the new immutable state.
 
-**4. Visualise the complete flow** <br>
+**3b.4. Visualise the complete flow** <br>
 <img src="./visualise_complete_flow.png" alt="visualise_complete_flow" width="300"/>
 
 ### 3c) What is action payload?
@@ -329,7 +329,121 @@ This means we get simpler code without sacrificing Redux's immutability principl
 
 ---
 
-### 3d) when store updates state does another component rerenders? also it uses state.counter.value. is that because "counter" is the name we gave inside slice? **chatgpt chat**??
+### 3d) when store updates state does another component rerenders? also it uses state.counter.value. is that because "counter" is the name we gave inside slice?
+
+A) Let's break it down
+
+### 3d.1) When the Redux store updates, do other components re-render?
+
+Not necessarily every component. Components using useSelector() are notified when the Redux store updates.React Redux compares the previous selected value with the new selected value using reference equality (===).
+
+- If the selected value changes, the component re-renders.
+- If the selected value remains the same, the component normally does not re-render because of that store update.
+  For example:
+
+  ```JSX
+  function Counter() {
+  const count = useSelector((state) => state.counter.value);
+  return <h2>{count}</h2>;
+  }
+
+  function UserProfile() {
+  const user = useSelector((state) => state.user);
+
+  return <h2>{user.name}</h2>;
+  }
+  ```
+
+  If the counter changes but the user state doesn't, Counter re-renders, but UserProfile normally doesn't.
+
+### 3d.2) Why do we use state.counter.value?
+
+A) Correct! counter is the name we gave when registering the slice reducer in the store.
+For example, our slice:
+
+```JSX
+const counterSlice = createSlice({
+  name: 'counter',
+  initialState: {
+    value: 0
+  },
+  reducers: {
+    increment: (state) => {
+      state.value += 1;
+    }
+  }
+});
+```
+
+Now look at the store:
+
+```JSX
+const store = configureStore({
+  reducer: {
+    counter: counterSlice.reducer
+  }
+});
+```
+
+Here:
+
+```JS
+counter: counterSlice.reducer
+```
+
+The key counter determines the location of this slice's state in the Redux store.
+So the overall state structure looks like this:
+
+```JS
+{
+  counter: {
+    value: 0
+  }
+}
+```
+
+That's why we access it using:
+
+```JSX
+const count = useSelector((state) => state.counter.value);
+```
+
+### 3d.3)What if we change the name?
+
+Suppose we register the reducer like this:
+
+```JS
+const store = configureStore({
+  reducer: {
+    myCounter: counterSlice.reducer
+  }
+});
+```
+
+The state structure becomes:
+
+```JS
+{
+  myCounter: {
+    value: 0
+  }
+}
+```
+
+Now we must access it using:
+
+```JS
+const count = useSelector((state) => state.myCounter.value);
+```
+
+**Summary**
+**Remember the distinction:**
+
+| Name                                                    | Purpose                                                         |
+| ------------------------------------------------------- | --------------------------------------------------------------- |
+| `name: 'counter'` inside `createSlice`                  | Used to generate action type names, such as `counter/increment` |
+| `counter: counterSlice.reducer` inside `configureStore` | Determines where the slice's state lives in the store           |
+| `value`                                                 | Property inside the slice's initial state                       |
 
 ## 4. Create the Redux store
 
@@ -403,7 +517,193 @@ For example:
 state.counter.value;
 ```
 
-### What if we have multiple slices?
+### B) Q)MFUPQ on above. specially shape of our global Redux state.Code is what we saw earlier as well. (Grey bg below is question)
+
+> conceptually store contains
+
+```JSX
+{
+  counter: {
+    value: 0;
+  }
+}
+```
+
+> Looking at above code, Is it safe to assume that store state looks like this because
+> "counter" comes from _**key**_ used in store i.e in \_**configureStore**.If i had used another key there <br>
+> then object will look differently.Right? <br>
+> Also, is it necessary to have same name as name of slice?. In "slice" we had name as "counter" as well. <br>
+> Addtionally, we get
+
+```JS
+{
+ value:0
+}
+```
+
+> because that is the intial state..is that right?. Code again below for quick ref
+
+| `counterSlice.js`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | `store.js`                                                                                                                                                                                                                           |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| <br>import { createSlice } from "@reduxjs/toolkit";<br><br>const counterSlice = createSlice({<br> name: "counter",<br> initialState: { value: 0 },<br> reducers: {<br> increment: (state) => {<br> state.value += 1;<br> },<br> decrement: (state) => {<br> state.value -= 1;<br> },<br> incrementByAmount: (state, action) => {<br> state.value += action.payload;<br> },<br> },<br>});<br><br>export const { increment, decrement, incrementByAmount } = counterSlice.actions;<br>export default counterSlice.reducer;<br> | <br>import { configureStore } from "@reduxjs/toolkit";<br>import counterReducer from "../features/counter/counterSlice";<br><br>export const store = configureStore({<br> reducer: {<br> counter: counterReducer,<br> },<br>});<br>` |
+
+### Ans B)
+
+**i). Where does counter come from?**
+From your store.js:
+
+```JS
+export const store = configureStore({
+reducer: {
+ counter: counterReducer,
+},
+});
+```
+
+The key _counter_ determines where the reducer's state is stored.
+
+So Redux maintains this conceptual state structure:
+
+```JSX
+{
+  counter: {
+    value: 0
+  }
+}
+```
+
+If you changed your store configuration to:
+
+```JSX
+export const store = configureStore({
+  reducer: {
+    myCounter: counterReducer,
+  },
+});
+```
+
+The state structure would become:
+
+```JS
+{
+  myCounter: {
+    value: 0
+  }
+}
+```
+
+And you would access it using:
+
+```JS
+const count = useSelector((state) => state.myCounter.value);
+```
+
+**ii) 2. Is it necessary to use the same name as the slice?**
+
+**No**. They are independent.
+
+In your _counterSlice.js_:
+
+```JS
+const counterSlice = createSlice({
+  name: "counter",
+  initialState: {
+    value: 0,
+  },
+  // reducers...
+});
+
+```
+
+Here, name: _"counter"_ is used by Redux Toolkit to generate action type names.
+
+For **example**:
+
+```JSX
+counter/increment
+counter/decrement
+counter/incrementByAmount
+```
+
+In your _store.js:_
+
+```JSX
+reducer: {
+counter: counterReducer,
+}
+```
+
+Here, _counter_ determines the **location of the state**.
+
+You can technically use different names:
+
+```JS
+// counterSlice.js
+name: "counter"
+
+// store.js
+reducer: {
+myCounter: counterReducer
+}
+```
+
+Your action type would still be:
+
+```JS
+counter/increment
+```
+
+But your state selector would be:
+
+```JS
+state.myCounter.value
+```
+
+I recommend keeping the names the same for readability and consistency.
+
+**iii) 3. Why do we get { value: 0 }?**
+
+Exactly! It comes from your initialState.
+
+```JS
+initialState: {
+  value: 0,
+}
+```
+
+Redux uses this as the initial state for that slice.
+
+When the application starts, your store state conceptually looks like:
+
+```JS
+{
+counter: {
+value: 0
+}
+}
+```
+
+After dispatching **increment()**, it becomes:
+
+```JS
+{
+counter: {
+value: 1
+}
+}
+```
+
+After dispatching **incrementByAmount(5)**, it becomes:
+
+```JS
+{
+counter: {
+value: 6
+}
+}
+```
+
+### Q)What if we have multiple slices?
 
 We can simply register additional reducers:
 
